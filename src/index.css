@@ -1,5 +1,4 @@
 body {
-  padding: 1rem;
   font-family: sans-serif;
   text-align: center;
   display: flex;
@@ -9,4 +8,8 @@ body {
 .warning {
   font-size: 110%;
   color: red;
+}
+
+.variance-message {
+  width: 700px;
 }

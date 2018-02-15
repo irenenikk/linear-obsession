@@ -63,7 +63,7 @@ class App extends React.Component {
             <Slider title="Expected value" min={this.state.min} max={this.state.max} onChange={this.changeExpectedValue} value={this.state.e}/>
             <Slider title="Variance" min={0} max={this.state.max} onChange={this.changeVariance} value={this.state.v}/>
             {
-              this.state.v === 0.0001 && <div><div className="warning">Variance actually can't be zero</div> <div>But it's cool to see how the distribution acts in the corner cases, so here the actual value is just really close to zero, e.g. 0.0001</div></div>
+              this.state.v === 0.0001 && <div className="variance-message"><div className="warning">Variance actually can't be zero</div> <div>Here the actual value is just really close to zero, e.g. 0.0001</div></div>
             }
           </div>
         }

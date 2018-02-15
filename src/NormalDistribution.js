@@ -8,9 +8,9 @@ export default ({ size, data, standard }) => {
       <LineChart width={size} height={0.75*size}>
         <Line type="monotone" dataKey="y" stroke={standard ? "red" : "#8884d8"} data={data.values} />
         <XAxis dataKey="x"/>
-        <ReferenceLine y={data.maxValue} stroke="black"/>
+        <ReferenceLine y={data.maxValue} stroke="black" label={data.maxValue}/>
         <ReferenceLine x={data.minDistanceFromZero} stroke="black"/>
-        <YAxis />
+        <YAxis domain={[0, 2]} />
         <CartesianGrid strokeDasharray="3 3"/>
         <Tooltip/>
       </LineChart>
