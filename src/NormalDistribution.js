@@ -10,7 +10,7 @@ export default ({ size, data, standard }) => {
         <XAxis dataKey="x"/>
         <ReferenceLine y={data.maxValue} stroke="black" label={data.maxValue}/>
         <ReferenceLine x={data.minDistanceFromZero} stroke="black"/>
-        <YAxis domain={[0, 2]} />
+        <YAxis domain={[0, 1]} />
         <CartesianGrid strokeDasharray="3 3"/>
         <Tooltip/>
       </LineChart>

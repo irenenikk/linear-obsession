@@ -13,8 +13,8 @@ class App extends React.Component {
     this.calculateDistribution()
   }
 
-  getNormalDensity = (x, mu, sigma) => {
-    return Math.pow(Math.E, -1*Math.pow(x-mu, 2)/2*Math.pow(sigma, 2)) * 1/(sigma * Math.sqrt(2 * Math.PI))
+  getNormalDensity = (x, mu, sigma2) => {
+    return Math.pow(Math.E, -1*Math.pow(x-mu, 2)/(2*sigma2)) * 1/Math.sqrt(2 * Math.PI * sigma2)
   }
 
   roundPrecisely = (n) => {
