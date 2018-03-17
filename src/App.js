@@ -22,7 +22,6 @@ class App extends React.Component {
   }
 
   calculateDistribution = () => {
-    debugger
     let values = []
     let maxValue = 0
     let minDistanceFromZero = 1
