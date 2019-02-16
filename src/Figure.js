@@ -9,12 +9,12 @@ export default ({ data, showLinear }) => {
       	<CartesianGrid />
         <XAxis dataKey="x" type="number" />
       	<YAxis dataKey="y" type="number" />
-        <Scatter data={data} fill='#8884d8'/>
+        <Scatter data={data} fill="#CFE5ED"/>
       	<Tooltip cursor={{strokeDasharray: '3 3'}}/>
-        <Line type="monotone" dataKey="trueLinear" stroke='#ff7300' dot={false} />
+        <Line type="monotone" dataKey="trueLinear" stroke='#7a87e5' dot={false} />
         {
           showLinear && 
-          <Line type="monotone" dataKey="linearPrediction" stroke='#0000ff' dot={false} />
+          <Line type="monotone" dataKey="linearPrediction" stroke='#dd0000' dot={false} />
         }
       </ComposedChart>
     </div>

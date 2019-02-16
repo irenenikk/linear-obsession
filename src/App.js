@@ -1,5 +1,6 @@
 import React from 'react'
 import Figure from './Figure'
+import Slider from './Slider';
 const gaussian = require('gaussian')
 const cov = require('compute-covariance')
 
@@ -11,6 +12,7 @@ class App extends React.Component {
       min: -10,
       max: 10, 
       showLinear: false,
+      dataAmount: 50,
     }
   }
 
@@ -67,7 +69,7 @@ class App extends React.Component {
     let data = []
     const xs = []
     const ys = []
-    for(let i = this.state.min; i < this.state.max; i += 0.2) {
+    for(let i = this.state.min; i < this.state.max; i += (this.state.max-this.state.min)/this.state.dataAmount) {
       const dat = this.getData(i, a, b)
       const trueLinear = this.getLinearFunction(i, a, b)
       const x = this.roundPrecisely(i)
@@ -82,16 +84,19 @@ class App extends React.Component {
     this.setState({ data: withPrediction, trueCoefficients: {a, b}, linearPrediction: pred })
   }
 
-
   toggleShowLinearPrediction = () => {
     this.setState({ showLinear: !this.state.showLinear})
+  }
+
+  changeDataAmount = (dataAmount) => {
+    this.setState({ dataAmount }, () => this.calculateDistribution())
   }
 
   render() {
     return (
       <div className="app">
-        <h1 class="header" >Linear obsession</h1>
-        <div class="description" >Click on the button below to see the linear prediction function</div>
+        <h1 className="header" >Linear obsession</h1>
+        <div className="description" >Click on the button below to see the linear prediction function in red. The true linear relationship is shown in blue.</div>
         {
           !this.state.data &&  <div>Loading</div>
         }
@@ -102,6 +107,7 @@ class App extends React.Component {
               <button onClick={() => this.toggleShowLinearPrediction()}>Show linear prediction</button>
               <button onClick={() => this.calculateDistribution()}>Reset data</button>
             </div>
+            <Slider value={this.state.dataAmount} onChange={this.changeDataAmount}/>
             <div>
               True value for slope: {this.roundPrecisely(this.state.trueCoefficients.a)} and intercept: {this.roundPrecisely(this.state.trueCoefficients.b)}
             </div>
