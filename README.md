@@ -1,5 +1,5 @@
-## Dist Wiz
+## Linear obsession
 
-[Try me here](https://dist-wiz.firebaseapp.com/)
+A tool for visualizing linear regression on fake data.
 
-A simple widget to visualize the meaning of expected value and variance in a normal distribution.
+First, random slope and intercept coefficients are chosen. A dataset is sampled using the coefficients and a gaussian error. The linear prediction function is calculated by minimizing the mean squared error.

@@ -6,7 +6,7 @@ deploy:
   token:
     secure: TzoF+O1EgOKY+hYMMlIzYjLF9j7YVhjCD27/F/t3o9iGcJijZXMNdkU8zN1PNTZBqVtfUcMp7Hvom6I4xIsfPgUYd0DcPNDO3346lYfur0raWnZvUqMWAu/1Y3qaIteuTz+/0KNKQu3MnS5ZwmwCZrWLbQgeGo7aiaoElWwQoA+R+LqUIp8h0eB7sMHR9fNVEoj2lWBkfT2TIfF+aCXpHfOum3uZQA5medNirnHgoxtf4JG+misAT9dKlLjL/KFw66wBEEyYGpUB4G/Ke8Bz5/wjsgZGzWtzS1tUojHZfsA0K5yYurmPGNKpyk4l+mwX/IhbkfLB1JkT7OWLdHkU8T3N63cDv+aqBA4VqH59Ckc9xChCcL9qyP5UNL7XTb5gRdAWaUbbSyoCvCnBCpy8iLXl5/ff8MkrN+56QeRCfztLZBv0vnhPSbdV1tresCh3aXJBsS/KvgCYHjPd9Fem0cCHmWoBcejXL7qU4+VgHK5aCamXo7wNSDrg1U8Vn/4ri1qEgEZ3scanjMXgoJ8PCESnuNbHHh7byFsyatu+VeqG41UrPy05NT2ooCEUscojaesoSMLBPsPS2TDbMV8ZBCvdGg8WURiNj+rTnsvCx2jhHEATnBTsoY3GgXjJZLoB3sIvzm1o+74CjuzI0CqYrsu2hvuHk8UGsCIdsZGxbWs=
   skip_cleanup: true
-  project: dist-wiz
+  project: linear-obsession
 cache:
   directories:
   - node_modules

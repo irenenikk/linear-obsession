@@ -1,12 +1,17 @@
 import React from 'react'
-import NormalDistribution from './NormalDistribution'
-import Slider from './Slider'
+import Figure from './Figure'
+const gaussian = require('gaussian')
+const cov = require('compute-covariance')
 
 class App extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = { e: 0, v: 1, min: -10, max: 10 }
+    this.state = { 
+      min: -10,
+      max: 10, 
+      showLinear: false,
+    }
   }
 
   componentDidMount() {
@@ -17,53 +22,93 @@ class App extends React.Component {
     return Math.pow(Math.E, -1*Math.pow(x-mu, 2)/(2*sigma2)) * 1/Math.sqrt(2 * Math.PI * sigma2)
   }
 
+  getData = (x, a, b) => {
+    const distribution = gaussian(0, 1);
+    return a * x + b + distribution.ppf(Math.random());
+  }
+  
+  getLinearFunction = (x, a , b) => {
+    return a * x + b;
+  }
+
   roundPrecisely = (n) => {
     return Math.round(n*100)/100;
   }
 
-  calculateDistribution = () => {
-    let values = []
-    let maxValue = 0
-    let minDistanceFromZero = 1
-    for(let i = this.state.min; i < this.state.max; i += 0.2) {
-      const dens = this.getNormalDensity(i, this.state.e, this.state.v)
-      if (Math.abs(i) < Math.abs(minDistanceFromZero)) {
-        minDistanceFromZero = this.roundPrecisely(i)
-      }
-      maxValue = Math.max(maxValue, dens)
-      values.push({ y: dens, x:  this.roundPrecisely(i)})
+  getRandomCoefficient = () => {
+    return Math.random(-this.state.min/2, this.state.max/2) 
+  }
+
+  calculateMean = (arr) => {
+    return arr.reduce((acc, curr) => acc + curr, 0) / (arr.length - 1)
+  }
+
+  calculateBestLinearPrediction = (x, y) => {
+    const yMean = this.calculateMean(y)
+    // covariance matrix:
+    //        X    |    Y
+    // X    Var(X)   Cov(X,Y)
+    // Y  Cov(X,Y)    Var(Y)
+    const covMatrix = cov(x, y)
+    if (!covMatrix) {
+      return {a: 0, b: 0};
     }
-    this.setState({ data: { values, maxValue, minDistanceFromZero }})
+    const xVariance = covMatrix[0][0]
+    const covariance = covMatrix[0][1];
+    const xMean = this.calculateMean(x)
+    // Y = cov(X,Y)/Var(X) * X + EY - cov(X,Y)/Var(X) * EX 
+    const a = covariance/xVariance
+    return { a, b: yMean - a * xMean } 
   }
 
-  changeExpectedValue = (value) => {
-    this.setState({ e: value }, () => {
-      this.calculateDistribution()
+  calculateDistribution = () => {
+    const a = this.getRandomCoefficient()
+    const b = this.getRandomCoefficient()
+    let data = []
+    const xs = []
+    const ys = []
+    for(let i = this.state.min; i < this.state.max; i += 0.2) {
+      const dat = this.getData(i, a, b)
+      const trueLinear = this.getLinearFunction(i, a, b)
+      const x = this.roundPrecisely(i)
+      ys.push(dat)
+      xs.push(x)
+      data.push({ y: dat, trueLinear, x})
+    }
+    const pred = this.calculateBestLinearPrediction(xs, ys)
+    const withPrediction = data.map(d => {
+      return{...d, linearPrediction: this.getLinearFunction(d.x, pred.a, pred.b)}
     })
+    this.setState({ data: withPrediction, trueCoefficients: {a, b}, linearPrediction: pred })
   }
 
-  changeVariance = (value) => {
-    const v = (value === 0 ? 0.0001 : value)
-    this.setState({ v }, () => {
-      this.calculateDistribution()
-    })
+
+  toggleShowLinearPrediction = () => {
+    this.setState({ showLinear: !this.state.showLinear})
   }
 
   render() {
     return (
       <div className="app">
+        <h1 class="header" >Linear obsession</h1>
+        <div class="description" >Click on the button below to see the linear prediction function</div>
         {
           !this.state.data &&  <div>Loading</div>
         }
         {
           this.state.data &&
           <div>
-            <NormalDistribution size={700} data={this.state.data} standard={this.state.e === 0 && this.state.v === 1}/>
-            <Slider title="Expected value" min={this.state.min} max={this.state.max} onChange={this.changeExpectedValue} value={this.state.e}/>
-            <Slider title="Variance" min={0} max={this.state.max} onChange={this.changeVariance} value={this.state.v}/>
-            {
-              this.state.v === 0.0001 && <div className="variance-message"><div className="warning">Variance actually can't be zero</div> <div>Here the value is just really close to zero, e.g. 0.0001</div></div>
-            }
+            <div>
+              <button onClick={() => this.toggleShowLinearPrediction()}>Show linear prediction</button>
+              <button onClick={() => this.calculateDistribution()}>Reset data</button>
+            </div>
+            <div>
+              True value for slope: {this.roundPrecisely(this.state.trueCoefficients.a)} and intercept: {this.roundPrecisely(this.state.trueCoefficients.b)}
+            </div>
+            { this.state.showLinear && <div>
+              Prediction for slope: {this.roundPrecisely(this.state.linearPrediction.a)} and intercept: {this.roundPrecisely(this.state.linearPrediction.b)}
+            </div>}
+            <Figure size={700} data={this.state.data} showLinear={this.state.showLinear}/>
           </div>
         }
       </div>

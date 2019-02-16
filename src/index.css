@@ -1,15 +1,23 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   display: flex;
   justify-content: center;
 }
 
-.warning {
-  font-size: 110%;
-  color: red;
+.header {
+  font-style: normal;
+  font-weight: 100;
 }
 
-.variance-message {
-  width: 700px;
+.description {
+  margin: 2rem;
 }
+
+button {
+  border: 2px solid rgb(226, 230, 233);
+  padding: 0.5rem;
+  background-color: rgb(226, 230, 233);
+  margin: 1rem 0.2rem;
+}
+
