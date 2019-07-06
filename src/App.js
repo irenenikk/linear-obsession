@@ -1,6 +1,8 @@
 import React from 'react'
 import Figure from './Figure'
-import Slider from './Slider';
+import Slider from './Slider'
+import Stats from './Stats'
+import { roundPrecisely } from './utils'
 const gaussian = require('gaussian')
 const cov = require('compute-covariance')
 
@@ -31,10 +33,6 @@ class App extends React.Component {
   
   getLinearFunction = (x, a , b) => {
     return a * x + b;
-  }
-
-  roundPrecisely = (n) => {
-    return Math.round(n*100)/100;
   }
 
   getRandomCoefficient = () => {
@@ -72,7 +70,7 @@ class App extends React.Component {
     for(let i = this.state.min; i < this.state.max; i += (this.state.max-this.state.min)/this.state.dataAmount) {
       const dat = this.getData(i, a, b)
       const trueLinear = this.getLinearFunction(i, a, b)
-      const x = this.roundPrecisely(i)
+      const x = roundPrecisely(i)
       ys.push(dat)
       xs.push(x)
       data.push({ y: dat, trueLinear, x})
@@ -96,24 +94,20 @@ class App extends React.Component {
     return (
       <div className="app">
         <h1 className="header" >Linear obsession</h1>
-        <div className="description" >Click on the button below to see the linear prediction function in red. The true linear relationship is shown in blue.</div>
+        <div className="description" >
+          Click on the button below to see the linear prediction function in red. The true linear relationship, used to sample the dataset, is shown in blue.
+          </div>
         {
-          !this.state.data &&  <div>Loading</div>
-        }
-        {
-          this.state.data &&
-          <div>
+          !this.state.data ?
+            <div>Loading</div>
+          :
+          <div class="data">
             <div>
               <button onClick={() => this.toggleShowLinearPrediction()}>Show linear prediction</button>
               <button onClick={() => this.calculateDistribution()}>Reset data</button>
             </div>
             <Slider value={this.state.dataAmount} onChange={this.changeDataAmount}/>
-            <div>
-              True value for slope: {this.roundPrecisely(this.state.trueCoefficients.a)} and intercept: {this.roundPrecisely(this.state.trueCoefficients.b)}
-            </div>
-            { this.state.showLinear && <div>
-              Prediction for slope: {this.roundPrecisely(this.state.linearPrediction.a)} and intercept: {this.roundPrecisely(this.state.linearPrediction.b)}
-            </div>}
+            <Stats trueCoefficients={this.state.trueCoefficients} linearPrediction={this.state.linearPrediction} showPrediction={this.state.showLinear}/>
             <Figure size={700} data={this.state.data} showLinear={this.state.showLinear}/>
           </div>
         }

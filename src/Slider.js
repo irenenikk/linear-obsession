@@ -6,7 +6,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider);
 export default ({ value, onChange }) => {
   return (
     <div className="slider">
-      Amount of data:
+      <div className="heading">Amount of data:</div>
       <SliderWithTooltip
         value={value}
         min={0}
