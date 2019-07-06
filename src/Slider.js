@@ -10,7 +10,7 @@ export default ({ value, onChange }) => {
       <SliderWithTooltip
         value={value}
         min={0}
-        max={100}
+        max={500}
         onChange={onChange}
         step={1}
       />

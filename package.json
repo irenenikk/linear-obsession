@@ -1,14 +1,16 @@
 {
-  "name": "dist-wiz",
+  "name": "linear-obsession",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "compute-covariance": "^1.0.1",
+    "gaussian": "^1.1.0",
     "randgen": "^0.1.0",
     "rc-slider": "^8.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1",
-    "recharts": "^1.0.0-beta.10"
+    "recharts": "^1.6.2"
   },
   "scripts": {
     "start": "react-scripts start",
